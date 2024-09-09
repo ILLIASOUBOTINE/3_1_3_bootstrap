@@ -4,8 +4,25 @@
     <title>Spring Security Example</title>
 </head>
 <body>
-<h1>User, welcome spring boot security page!</h1>
+<h2>User, welcome spring boot security page!</h2>
+<div>
+    <div class="mg"  th:object="${user}" >
+        <div>
+            <p>Fist Name: <span th:text="*{firstName}"></span>  </p>
+        </div>
+        <div>
+            <p>Last Name: <span th:text="*{lastName}"></span></p>
+        </div>
+        <div>
+            <p>Email: <span th:text="*{email}"></span></p>
+        </div>
+     </div>
 
+    <div>
+        <a th:href="@{/logout}">Logout</a>
+    </div>
+
+</div>
 
 </body>
 </html>

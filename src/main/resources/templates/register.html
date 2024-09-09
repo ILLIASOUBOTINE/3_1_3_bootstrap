@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Registration</title>
+</head>
+<body>
+<h1>Register New User</h1>
+
+<!-- Блок для отображения ошибок -->
+<div th:if="${error}" style="color: red;">
+    <p th:text="${error}"></p> <!-- Вывод текста ошибки -->
+</div>
+
+<form th:action="@{/register}" method="post">
+    <div>
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" th:field="${user.firstName}" required />
+    </div>
+    <div>
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" th:field="${user.lastName}" required />
+    </div>
+    <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" th:field="${user.email}" required />
+    </div>
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" th:field="${user.password}" required />
+    </div>
+    <div>
+        <label>Roles:</label>
+        <div>
+            <input type="checkbox" id="role_user" name="roles1[]" value="ROLE_USER" />
+            <label for="role_user">USER</label>
+        </div>
+        <div>
+            <input type="checkbox" id="role_admin" name="roles1[]" value="ROLE_ADMIN" />
+            <label for="role_admin">ADMIN</label>
+        </div>
+    </div>
+    <div>
+        <button type="submit">Register</button>
+    </div>
+</form>
+</body>
+</html>
+

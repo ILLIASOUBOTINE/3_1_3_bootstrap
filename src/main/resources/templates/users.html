@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Users</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            padding: 5px;
+        }
+        a {
+            color: darkgreen;
+        }
+        .mg {
+            margin-top: 20px;
+        }
+        .mb10 {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div class="mb10">
+        <a href="/">go Home</a>
+    </div>
+
+    <div  class="mb10">
+        <a href="/admin/user-form">Add new User</a>
+    </div>
+
+    <div th:if="${#lists.isEmpty(users)}">
+        <h2>List users is empty</h2>
+    </div>
+
+    <div th:unless="${#lists.isEmpty(users)}">
+        <table  class="mg">
+            <tr>
+                <th>ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>Roles</th>
+                <th></th>
+                <th></th>
+            </tr>
+            <th:block th:each="user : ${users}">
+                <tr>
+                    <td th:text="${user.id}"></td>
+                    <td th:text="${user.firstName}"></td>
+                    <td th:text="${user.lastName}"></td>
+                    <td th:text="${user.email}"></td>
+                    <td>
+                        <span th:each="role : ${user.roles}" th:text="${role.name}"></span>
+                    </td>
+                    <td>
+                        <form th:action="@{/admin/user-form-update}" method="post">
+                            <input type="hidden" name="userId" th:value="${user.id}" />
+                            <button type="submit">update</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form th:action="@{/admin/delete}" method="post">
+                            <input type="hidden" name="userId" th:value="${user.id}" />
+                            <button type="submit">delete</button>
+                        </form>
+                    </td>
+                </tr>
+
+            </th:block>
+        </table>
+    </div>
+
+    <div>
+        <a th:href="@{/logout}">Logout</a>
+    </div>
+</div>
+
+</body>
+</html>
