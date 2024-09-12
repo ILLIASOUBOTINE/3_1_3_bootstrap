@@ -22,13 +22,16 @@ public class User implements UserDetails {
    @Column(name = "last_name")
    private String lastName;
 
+   @Column(name="age")
+   private int age;
+
    @Column(name = "email")
    private String email;
 
    @Column(name = "password")
    private String password;
 
-   @ManyToMany(fetch = FetchType.EAGER)
+   @ManyToMany(fetch = FetchType.LAZY)
    @JoinTable(name = "user_roles",
            joinColumns = @JoinColumn(name = "user_id"),
            inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -37,9 +40,10 @@ public class User implements UserDetails {
    public User() {
    }
 
-   public User(String firstName, String lastName, String email, String password, Set<Role> roles) {
+   public User(String firstName, String lastName, int age, String email, String password, Set<Role> roles) {
       this.firstName = firstName;
       this.lastName = lastName;
+      this.age = age;
       this.email = email;
       this.password = password;
       this.roles = roles;
@@ -52,8 +56,9 @@ public class User implements UserDetails {
    @Override
    public String toString() {
       return "User{" +
-              ", firstName='" + firstName + '\'' +
+              "firstName='" + firstName + '\'' +
               ", lastName='" + lastName + '\'' +
+              ", age=" + age +
               ", email='" + email + '\'' +
               ", password='" + password + '\'' +
               ", roles=" + roles +
@@ -78,6 +83,14 @@ public class User implements UserDetails {
 
    public void setLastName(String lastName) {
       this.lastName = lastName;
+   }
+
+   public int getAge() {
+      return age;
+   }
+
+   public void setAge(int age) {
+      this.age = age;
    }
 
    public String getEmail() {

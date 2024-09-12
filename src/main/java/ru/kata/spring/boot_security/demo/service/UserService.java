@@ -11,4 +11,6 @@ public interface UserService  {
     void delete(Long id);
     User findById(Long id);
     User findByEmail(String email);
+    void registerUser(User user, List<String> roles);
+    User getAuthenticatedUser();
 }

@@ -10,19 +10,19 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import ru.kata.spring.boot_security.demo.service.UserServiceImp;
+
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final SuccessUserHandler successUserHandler;
-    private final UserServiceImp userService;
+    private final UserDetailsService userDetailsService;
 
 
-    public WebSecurityConfig(SuccessUserHandler successUserHandler, UserServiceImp userServiceImp) {
+    public WebSecurityConfig(SuccessUserHandler successUserHandler,UserDetailsService userDetailsService) {
         this.successUserHandler = successUserHandler;
-        this.userService = userServiceImp;
+        this.userDetailsService = userDetailsService;
     }
 
     @Override
@@ -58,13 +58,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     @Override
     public UserDetailsService userDetailsService() {
-        return userService;
+        return userDetailsService;
     }
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userService);
+        authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
         return authProvider;
     }

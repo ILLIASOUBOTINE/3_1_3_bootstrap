@@ -21,6 +21,10 @@
 <div>
     <a href="/admin">go Back</a>
 
+    <div th:if="${error}" class="error-message">
+        <p th:text="${error}" style="color: red"></p>
+    </div>
+
     <form class="mg" th:action="@{|/admin/${action}|}" th:object="${user}" method="post">
 
         <input type="hidden" th:field="*{id}" />
@@ -38,7 +42,7 @@
         <br/>
         <br/>
         <label for="password">Password:</label>
-        <input type="password" id="password" required th:field="*{password}" />
+        <input type="password" id="password" th:field="*{password}" />
         <br/>
         <br/>
         <label>Roles:</label>
