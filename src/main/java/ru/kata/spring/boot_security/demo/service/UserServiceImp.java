@@ -52,7 +52,7 @@ public class UserServiceImp implements UserService{
          throw new IllegalArgumentException("User with this email already exists.");
       }
       if (user.getPassword() == null || user.getPassword().isEmpty()) {
-         user.setPassword(passwordEncoder.encode(existingUser.getPassword()));
+         user.setPassword(existingUser.getPassword());
       } else {
          user.setPassword(passwordEncoder.encode(user.getPassword()));
       }
