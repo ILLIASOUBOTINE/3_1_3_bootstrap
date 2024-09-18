@@ -60,6 +60,31 @@ public class UserServiceImp implements UserService{
    }
 
    @Override
+   public void update(User user, List<String> roles) {
+      User existingUser = findById(user.getId());
+
+      if (!existingUser.getEmail().equals(user.getEmail()) && findByEmail(user.getEmail()) != null) {
+         throw new IllegalArgumentException("User with this email already exists.");
+      }
+
+      // Преобразование строковых ролей в объекты Role
+      Set<Role> userRoles = roles.stream()
+              .map(roleService::findByName)
+              .filter(Objects::nonNull)
+              .collect(Collectors.toSet());
+
+      // Устанавливаем роли
+      user.setRoles(userRoles);
+
+      if (user.getPassword() == null || user.getPassword().isEmpty()) {
+         user.setPassword(existingUser.getPassword());
+      } else {
+         user.setPassword(passwordEncoder.encode(user.getPassword()));
+      }
+      userDao.update(user);
+   }
+
+   @Override
    public void delete(Long id) {
       userDao.delete(id);
    }
@@ -73,8 +98,6 @@ public class UserServiceImp implements UserService{
    public User findByEmail(String email) {
       return userDao.findByEmail(email);
    }
-
-
 
    @Override
    public void registerUser(User user, List<String> roles) {

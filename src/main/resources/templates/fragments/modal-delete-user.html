@@ -1,0 +1,45 @@
+<div th:fragment="modal-delete-user" id="modalDeleteUser" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete user</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+            </div>
+            <div class="modal-body text-center">
+
+                <div class="mb-3">
+                    <label for="id" class="form-label fw-semibold">ID</label>
+                    <input type="text" id="id"  class="form-control" disabled />
+                </div>
+                <div class="mb-3">
+                    <label for="firstName" class="form-label fw-semibold">First name</label>
+                    <input type="text" id="firstName"  class="form-control" disabled />
+                </div>
+                <div class="mb-3">
+                    <label for="lastName" class="form-label fw-semibold">Last name</label>
+                    <input type="text" id="lastName"  class="form-control" disabled />
+                </div>
+                <div class="mb-3">
+                    <label for="age" class="form-label fw-semibold">Age</label>
+                    <input type="number" id="age"  class="form-control" disabled/>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label fw-semibold">Email</label>
+                    <input type="email" id="email"  class="form-control" disabled />
+                </div>
+                <div class="mb-3">
+                    <label for="roles1" class="form-label fw-semibold">Roles</label>
+                    <select id="roles1" name="roles1" multiple class="form-select" disabled></select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <form th:action="@{/admin/delete}" method="post">
+                    <input type="hidden" name="userId" id="modal-hidden-user-id"/>
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

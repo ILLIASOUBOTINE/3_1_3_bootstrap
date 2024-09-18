@@ -20,8 +20,8 @@ public class UserController {
 
     @GetMapping("/user")
     public String userPage(Model model) {
-        User user = userService.getAuthenticatedUser();
-        model.addAttribute("user", user);
-        return "user";
+        User currentUser = userService.getAuthenticatedUser();
+        model.addAttribute("currentUser", currentUser);
+        return "user-page";
     }
 }

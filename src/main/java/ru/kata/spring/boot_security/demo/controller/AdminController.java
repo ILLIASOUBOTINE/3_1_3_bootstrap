@@ -5,10 +5,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 import java.util.List;
+import java.util.Set;
+
 
 @Controller
 @RequestMapping("/admin")
@@ -22,35 +25,47 @@ public class AdminController {
     public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
-
     }
+
 
     @GetMapping("")
     public String getUsers(Model model) {
+        User currentUser = userService.getAuthenticatedUser();
+        model.addAttribute("currentUser", currentUser);
+
+        Set<Role> roles = roleService.findAll();
+        model.addAttribute("roles", roles);
+
         List<User> users = userService.listUsers();
         model.addAttribute("users", users);
-        return "users";
+
+        model.addAttribute("user", new User());
+        return "admin-page";
     }
 
-    @GetMapping("/user-form")
+    @GetMapping("/user-form-add")
     public String showUserForm(Model model) {
+        User currentUser = userService.getAuthenticatedUser();
+        model.addAttribute("currentUser", currentUser);
+
         if (!model.containsAttribute("user")) {
-            model.addAttribute("user", new User());
-        }
+           model.addAttribute("user", new User());
+       }
         model.addAttribute("roles", roleService.findAll());
         model.addAttribute("action", "add");
+        model.addAttribute("buttonText", "Add new user");
         return "user-form";
     }
 
     @PostMapping("/add")
-    public String addUser(@ModelAttribute("user") User user, RedirectAttributes redirectAttributes) {
+    public String addUser(@ModelAttribute("user") User user, @RequestParam(name = "roles1", required = false) List<String> roles, RedirectAttributes redirectAttributes) {
         try {
-            userService.add(user);
+            userService.registerUser(user, roles);
             return "redirect:/admin";
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("error", e.getMessage());
             redirectAttributes.addFlashAttribute("user", user);
-            return "redirect:/admin/user-form";
+            return "redirect:/admin/user-form-add";
         }
     }
 
@@ -63,9 +78,9 @@ public class AdminController {
     }
 
     @PostMapping("/update")
-    public String updateUser(@ModelAttribute("user") User user, Model model) {
+    public String updateUser(@ModelAttribute("user") User user,@RequestParam(name = "roles1", required = false) List<String> roles, Model model) {
         try {
-            userService.update(user);
+            userService.update(user,roles);
             return "redirect:/admin";
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", e.getMessage());
@@ -81,4 +96,6 @@ public class AdminController {
         userService.delete(userId);
         return "redirect:/admin";
     }
+
+
 }

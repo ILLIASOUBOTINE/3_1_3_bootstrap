@@ -1,5 +1,7 @@
 package ru.kata.spring.boot_security.demo.model;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.core.GrantedAuthority;
 import javax.persistence.*;
 
@@ -38,5 +40,15 @@ public class Role implements GrantedAuthority {
     @Override
     public String getAuthority() {
         return name;
+    }
+
+    public String toJson() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return "{}";
+        }
     }
 }
